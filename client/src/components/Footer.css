@@ -1,0 +1,38 @@
+.footer {
+  background: #000;
+  color: #fff;
+  padding: 2em 1em;
+  text-align: center;
+  animation: slideInUp 1s ease-in-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.footer-links,
+.contact-info,
+.social-media {
+  margin-bottom: 1em;
+}
+
+.footer-links a,
+.social-media a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 0.5em;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover,
+.social-media a:hover {
+  color: #00c6ff;
+}

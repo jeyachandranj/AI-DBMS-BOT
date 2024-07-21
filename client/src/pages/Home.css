@@ -1,0 +1,109 @@
+.main-banner {
+    text-align: center;
+    padding: 3em 1em;
+    background: linear-gradient(90deg, #6dd5ed, #2193b0);
+    color: white;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .cards {
+    text-align: center;
+    padding: 2em 1em;
+    background: linear-gradient(90deg, #f7ff00, #db36a4);
+  }
+  
+  .cards .card {
+    display: inline-block;
+    width: 30%;
+    margin: 1em;
+    padding: 2em;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .cards .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .cards .card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+    z-index: 0;
+  }
+  
+  .cards .card:hover::before {
+    top: -10%;
+    left: -10%;
+  }
+  
+  .cards .card h3, .cards .card p, .cards .card button {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .cards .card h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #333;
+  }
+  
+  .cards .card p {
+    color: #666;
+  }
+  
+  .cards .card button {
+    padding: 0.5em 1em;
+    background: #ff8a00;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .cards .card button:hover {
+    background: #e52e71;
+  }
+  
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1em;
+  }
+  
+  .extra-content {
+    padding: 2em 1em;
+    background: linear-gradient(90deg, #6dd5ed, #2193b0);
+    color: white;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  .extra-content .content-block {
+    margin-bottom: 1em;
+  }
+  
+  .extra-content h2, .extra-content h3, .extra-content p {
+    color: #fff;
+  }
+  
