@@ -95,20 +95,31 @@ html {
 .chatbotSettings {
 	position: fixed;
 	top: 10vh;
-	width: calc(35% - 4em);
-	height: calc(45vh - 5em);
+	width: calc(45% - 4em);
+	height: calc(60vh - 5em);
 	bottom: 10vh;
 	left: 0;
 	right: 0;
 	margin: auto;
-    background: linear-gradient(90deg, #f7ff00, #db36a4);
-	color: #000;
+    background: #000;
+	color: #fff;
 	border-radius: 5.4em;
 	padding: 4em;
 	transition: all 0.3s ease-in-out;
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }
+
+
+.microphoneIcon {
+	position: absolute;
+	margin-left: 1180px;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 24px;
+	color: red;
+	cursor: pointer;
+  }
 
 .chatbotSettings::-webkit-scrollbar {
 	display: none;
@@ -127,6 +138,7 @@ html {
 
 .chatbotInput .chatbotInput_container {
 	display: grid;
+	
 	grid-template-columns: auto max-content;
 	align-items: center;
 	gap: 2em;
@@ -184,7 +196,8 @@ html {
 	display: grid;
 	gap: 0.5em;
 	grid-template-columns: 1fr 1fr;
-	height: 100%;
+	height: 80%;
+	margin-bottom: 50px;
 	column-gap: 2em;
 }
 
@@ -198,18 +211,63 @@ html {
 .settingsContainer form.settings .setting select {
 	font-size: 1em;
 	padding: 0.4rem 1em;
+	background-color: #fff;
+	color: #000;
 	border: none;
 	border-radius: 0.3em;
 }
-
-.settingsContainer form.settings button.btn_outline {
-	border: 1px solid #fff;
-	color: #fff;
-	padding: 1em 2em;
-	border-radius: 30em;
-	margin-top: 2em;
-	cursor: pointer;
+button {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 17px;
+    padding: 1em 2.7em;
+    font-weight: 500;
+    background: #1f2937;
+    color: white;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.6em;
+    cursor: pointer;
 }
+
+.gradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 0.6em;
+    margin-top: -0.25em;
+}
+
+.label {
+    position: relative;
+    top: -1px;
+}
+
+.transition {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 500ms;
+    background-color: rgba(16, 185, 129, 0.6);
+    border-radius: 9999px;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button:hover .transition {
+    width: 14em;
+    height: 14em;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+
 
 .settingsContainer form.settings.invalid #link_to_resume {
 	border: 1px solid #ff0000;
@@ -258,6 +316,18 @@ html {
 	outline: none;
 }
 
+.chatbotResponse {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	font-size: 20px;
+	color: #000;
+	margin-top: 30px;
+	padding: 10px;
+	border-radius: 5px;
+	z-index: 100;
+  }
+
 .chatbotInputWrap {
 	position: absolute;
 	top: 0;
@@ -266,3 +336,129 @@ html {
 	height: 100%;
 	pointer-events: none;
 }
+
+@keyframes borderAnimation {
+    0% {
+        border-top-color: red;
+        border-right-color: blue;
+        border-bottom-color: gray;
+        border-left-color: brown;
+    }
+    25% {
+        border-top-color: blue;
+        border-right-color: gray;
+        border-bottom-color: brown;
+        border-left-color: green;
+    }
+    50% {
+        border-top-color: gray;
+        border-right-color: brown;
+        border-bottom-color: green;
+        border-left-color: red;
+    }
+    75% {
+        border-top-color: brown;
+        border-right-color: green;
+        border-bottom-color: red;
+        border-left-color: blue;
+    }
+    100% {
+        border-top-color: green;
+        border-right-color: red;
+        border-bottom-color: blue;
+        border-left-color: gray;
+    }
+}
+
+.chatbotSettings {
+    border-width: 5px;
+    border-style: solid;
+    animation: borderAnimation 3s linear infinite;
+}
+
+
+:root {
+	--primary: 255, 90, 120;
+	--secondary: 150, 50, 60;
+	--microphone-color: rgb(240, 44, 80); /* Define microphone button color */
+	--chat-color: rgb(2, 110, 110); /* Define chat button color */
+	--microphone-border-color: rgba(255, 90, 120, 0.5);
+	--chat-border-color: rgba(0, 128, 128, 0.5);
+  }
+  
+  .btn-class-name {
+	width: 60px;
+	height: 50px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	user-select: none;
+	touch-action: manipulation;
+	border-radius: 100%;
+	position: relative;
+	transition: 0.3s;
+  }
+  
+  .btn-class-name .back {
+	border-radius: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+  }
+  
+  .btn-class-name .front {
+	border-radius: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2rem;
+	font-weight: 600;
+	font-family: inherit;
+	transform: translateY(-15%);
+	transition: 0.15s;
+  }
+  
+  .microphone-active {
+	background: var(--microphone-color);
+	color: var(--secondary);
+	border: 10px solid var(--microphone-border-color);
+  }
+  
+  .chat-active {
+	background: var(--chat-color);
+	color: white;
+	border: 10px solid var(--chat-border-color);
+  }
+  
+  .microphone-active .back {
+	background: var(--microphone-color);
+  }
+  
+  .chat-active .back {
+	background: var(--chat-color);
+  }
+  
+  .microphone-active .front {
+	background: linear-gradient(0deg, rgba(var(--primary), 0.6) 20%, rgba(var(--primary)) 50%);
+	box-shadow: 0 0.5em 1em -0.2em rgba(var(--secondary), 0.5);
+	border: 1px solid var(--secondary);
+  }
+  
+  .chat-active .front {
+	background: var(--chat-color);
+	box-shadow: 0 0.5em 1em -0.2em rgba(0, 128, 128, 0.5);
+	border: 1px solid white;
+  }
+  
+  .btn-class-name:active .front {
+	transform: translateY(0%);
+	box-shadow: 0 0;
+  }
+  

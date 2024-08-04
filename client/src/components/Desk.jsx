@@ -7,7 +7,7 @@ export function Desk(props) {
   const { nodes, materials } = useGLTF('/models/office_chair.glb')
   return (
     <group {...props} dispose={null}>
-      <group position={[-0.005, 0, 0.001]} rotation={[-Math.PI / 2, 0, 0]} scale={0.967}>
+      <group position={[-0.005, 0, 0.002]} rotation={[-Math.PI / 2, 0, 0.5]} scale={0.967}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <group scale={0.01}>
             <mesh

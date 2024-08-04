@@ -3,24 +3,30 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { useControls } from "leva";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-
 const animationFiles = {
+	"Type To Sit": "/animations/Type To Sit.fbx",
+	"Typing": "/animations/Typing.fbx",
 	"Victory": "/animations/Victory.fbx",
 	"Wave Hip Hop Dance": "/animations/Wave Hip Hop Dance.fbx",
 	"Waving": "/animations/Waving.fbx",
 	"Asking Question": "/animations/Asking Question.fbx",
+	"Having A Meeting": "/animations/Having A Meeting.fbx",
 	"Hip Hop Dancing": "/animations/Hip Hop Dancing.fbx",
 	"Idle": "/animations/Idle.fbx",
 	"Seated Idle": "/animations/Seated Idle.fbx",
+	"Sit To Stand": "/animations/Sit To Stand.fbx",
+	"Sit To Type": "/animations/Sit To Type.fbx",
 	"Sitting Clap": "/animations/Sitting Clap.fbx",
 	"Sitting Disapproval": "/animations/Sitting Disapproval.fbx",
 	"Sitting Idle": "/animations/Sitting Idle.fbx",
 	"Sitting Talking": "/animations/Sitting Talking.fbx",
 	"Sitting Thumbs Up": "/animations/Sitting Thumbs Up.fbx",
 	"Sitting Victory": "/animations/Sitting Victory.fbx",
+	"Stand To Sit": "/animations/Stand To Sit.fbx",
+	"Standing Greeting": "/animations/Standing Greeting.fbx",
 };
 
-const sittingTalkingAnimations = ["Sitting Talking", "Sitting Idle"];
+const sittingTalkingAnimations = ["Sitting Talking", "Sitting Idle", "Having A Meeting"];
 
 Object.values(animationFiles).forEach((url) => {
 	useFBX.preload(url);

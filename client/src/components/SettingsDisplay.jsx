@@ -88,6 +88,22 @@ const SettingsDisplay = ({ settings, setSettings, visible, setVisible }) => {
 					/>
 				</div>
 
+				<div className="setting">
+					<label htmlFor="resume">Resume Title</label>
+					<select
+						name="resume"
+						id="resume"
+						value={newSettings.resume_title}
+						onChange={(e) => setNewSettings({ ...newSettings, resume_title: e.target.value })}
+					>
+						<option value="skills">Skills</option>
+						<option value="project">Project</option>
+						<option value="hr">HR</option>
+						<option value="all">All</option>
+					</select>
+				</div>
+
+
 				<div className="setting__button">
 					<button className="btn_outline" type="submit">
 						Save 

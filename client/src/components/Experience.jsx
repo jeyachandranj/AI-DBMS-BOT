@@ -3,6 +3,7 @@ import { useThree } from "@react-three/fiber";
 import { Avatar } from "./Avatar";
 import { Desk } from "./Desk";
 import { useEffect, useRef, useState } from "react";
+import { Table } from "./Table";
 
 export const Experience = ({response}) => {
 	const controls = useRef();
@@ -24,7 +25,8 @@ export const Experience = ({response}) => {
         ref={controls}
 			/>
 			<Avatar position={[0, -3, 5]} scale={2} response={response} />
-			<Desk position={[-0.05, -3.05, 5]} scale={2.05} />
+			<Desk position={[-0.05, -3.05, 5]} scale={2} />
+			<Table position={[0,-1.8 ,6]} scale={1.4}/>
 			<Environment preset="sunset" />
 			<mesh>
 				<planeGeometry args={[newWidth, newHeight]} />

@@ -15,7 +15,7 @@ const HomePage = () => {
         <div className="card beginner">
           <h3>SKILLS</h3>
           <p>Start with fundamental questions and build a strong foundation.</p>
-          <Link to="/beginner"><button>Start Practicing</button></Link>
+          <Link to="/skills"><button>Start Practicing</button></Link>
         </div>
         <div className="card advanced">
           <h3>LIVE INTERVIEW</h3>

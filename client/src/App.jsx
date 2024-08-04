@@ -2,11 +2,11 @@ import React from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/Home';
-import BeginnerPage from './pages/Beginner';
+import HomeSkills from './pages/HomeSkills';
 import Advance from './pages/Advance';
-import  Audio  from './components/audio';
+import Reading from './pages/Reading';
+import Writing from './pages/Writing';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
 
 function App() {
   return (
@@ -15,9 +15,10 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<HomePage/>} />
-          <Route path="/beginner" element={<BeginnerPage/>} />
+          <Route path="/skills" element={<HomeSkills/>} />
           <Route path="/advance" element={<Advance/>} /> 
-          <Route path="/audio" element={<Audio/>}/>
+          <Route path="/read" element={<Reading/>}/>
+          <Route path="/write" element={<Writing/>}/>
         </Routes>
         <Footer />
       </div>
