@@ -17,7 +17,7 @@ const HomePage = () => {
           <p>Start with fundamental questions and build a strong foundation.</p>
           <Link to="/skills"><button>Start Practicing</button></Link>
         </div>
-        <div className="card advanced">
+        <div className="card beginner">
           <h3>LIVE INTERVIEW</h3>
           <p>Utilize AI for live interview face-to-text conversion to enhance knowledge.</p>
 
@@ -25,9 +25,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="extra-content">
-        
-      </section>
+      
     </main>
   );
 };  

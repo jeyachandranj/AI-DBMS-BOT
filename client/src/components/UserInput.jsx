@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSpeechRecognition } from "./useSpeechRecognition";
 import { useChatbot } from "./useChatbot";
 import debounce from "lodash.debounce";
 import SettingsDisplay from "./SettingsDisplay";
@@ -27,26 +26,38 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
     initChatbot().then((ready) => {
       setIsChatbotReady(ready);
     });
-
-    updateSpeechConfig("en-US", "en-US-RogerNeural");
   }, [settings]);
 
   const [speechText, setSpeechText] = useState("");
   const [listening, setListening] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
+  const [chunks, setChunks] = useState([]);
 
+  const recognition = useRef(null);
+  const inputRef = useRef(null);
 
-  const { startListening, stopListening, updateSpeechConfig } = useSpeechRecognition(
-    "en-US",
-    "en-US-RogerNeural",
-    speechText,
-    (text) => {
-      console.log("Speech to Text:", text);
-      setSpeechText(text);
-    },
-    setSpeechText,
-    setListening
-  );
+  useEffect(() => {
+    if (!('webkitSpeechRecognition' in window)) {
+      console.log("Your browser does not support speech recognition.");
+    } else {
+      recognition.current = new window.webkitSpeechRecognition();
+      recognition.current.continuous = true;
+      recognition.current.interimResults = false;
+      recognition.current.lang = "en-US";
+
+      recognition.current.onresult = (event) => {
+        const transcript = event.results[event.results.length - 1][0].transcript.trim();
+        console.log("Speech to Text:", transcript);
+        setSpeechText(transcript);
+        console.log("speech",speechText);
+      };
+
+      recognition.current.onerror = (event) => {
+        console.log("Speech recognition error:", event.error);
+      };
+    }
+  }, []);
 
   const debouncedSendMessage = debounce((message) => {
     if (!message) return;
@@ -56,6 +67,16 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
     sendMessage(message);
   }, 500);
 
+  const startListening = () => {
+    setListening(true);
+    recognition.current && recognition.current.start();
+  };
+
+  const stopListening = () => {
+    setListening(false);
+    recognition.current && recognition.current.stop();
+  };
+
   const toggleListening = () => {
     if (listening) {
       stopListening();
@@ -63,8 +84,6 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
       startListening();
     }
   };
-
-  const inputRef = useRef(null);
 
   useEffect(() => {
     if (listening && inputRef.current) {
@@ -89,13 +108,9 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
     };
   }, [speechText]);
 
-
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
-
-  const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
-  const [chunks, setChunks] = useState([]);
 
   useEffect(() => {
     if (response.response) {

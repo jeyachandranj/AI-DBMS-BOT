@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Paragraph from '../components/Skill/Para';
 import Questions from '../components/Skill/Questions';
+import '../pages/Reading.css';
+import logo from '../assets/loding.gif';
+import backgroundSvg from '../assets/backGround.svg'; // Import the SVG
+import Footer from '../components/Footer';
 
 const Reading = () => {
   const [loading, setLoading] = useState(true);
@@ -34,12 +38,16 @@ const Reading = () => {
     fetchContent();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-
   return (
-    <div>
-      {showParagraph && <Paragraph text={paragraph} />}
-      {showQuestions && <Questions questions={questions} />}
+    <div className={loading ? 'page-center' : 'reading-background'}>
+      {loading ? (
+        <img src={logo} alt="Loading" className="loading-img" />
+      ) : (
+        <>
+          {showParagraph && <Paragraph text={paragraph} />}
+          {showQuestions && <Questions questions={questions} />}
+        </>
+      )}
     </div>
   );
 };

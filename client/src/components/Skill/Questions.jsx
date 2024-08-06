@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import '../../pages/Reading.css';
 
 const Questions = ({ questions }) => {
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.questions.length).fill(""));
   const [score, setScore] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChange = (e, index) => {
     const newAnswers = [...selectedAnswers];
@@ -18,29 +20,33 @@ const Questions = ({ questions }) => {
       }
     });
     setScore(newScore);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
-    <div>
-      <h2>Questions</h2>
+    <div className="questions-container">
+      <h2 className="questions-header">Questions</h2>
       {Array.isArray(questions.questions) && questions.questions.length > 0 ? (
         questions.questions.map((q, index) => (
-          <div key={index} style={{ marginBottom: '20px' }}>
-            <p><strong>Q{index + 1}:</strong> {q.question}</p>
-            <div>
+          <div key={index} className="question-block">
+            <p className="question-text"><strong>Q{index + 1}:</strong> {q.question}</p>
+            <div className="options-container">
               {Object.keys(q.options).map((optionKey, i) => (
-                <div key={i} style={{ marginBottom: '5px' }}>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`question-${index}`}
-                      value={optionKey}
-                      onChange={(e) => handleChange(e, index)}
-                      checked={selectedAnswers[index] === optionKey}
-                    />
-                    {q.options[optionKey]}
-                  </label>
-                </div>
+                <label key={i} className="option-label">
+                  <input
+                    type="radio"
+                    name={`question-${index}`}
+                    value={optionKey}
+                    onChange={(e) => handleChange(e, index)}
+                    checked={selectedAnswers[index] === optionKey}
+                    className="option-input"
+                  />
+                  {q.options[optionKey]}
+                </label>
               ))}
             </div>
           </div>
@@ -48,8 +54,16 @@ const Questions = ({ questions }) => {
       ) : (
         <p>No questions available.</p>
       )}
-      <button onClick={handleSubmit}>Submit</button>
-      {score !== null && <h3>Your Score: {score} / {questions.questions.length}</h3>}
+      <button onClick={handleSubmit} className="submit-button">Submit</button>
+
+      {isModalOpen && (
+        <div className="score-modal" style={{ display: 'flex' }}>
+          <div className="score-modal-content">
+            <span className="close-button" onClick={closeModal}>&times;</span>
+            <h3>Your Score: {score} / {questions.questions.length}</h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

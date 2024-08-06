@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ionic/react": "^8.2.6",
     "@react-three/drei": "^9.107.1",
     "@react-three/fiber": "^8.16.8",
     "@types/three": "0.152.1",
     "axios": "^1.7.2",
     "framer-motion": "^11.2.10",
     "groq-sdk": "^0.5.0",
+    "ionicons": "^7.4.0",
     "leva": "^0.9.35",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",

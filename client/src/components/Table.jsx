@@ -13,7 +13,7 @@ export function Table(props) {
   const { nodes, materials } = useGLTF('/models/low_poly_gaming_desk.glb')
   return (
     <group {...props} dispose={null}>
-      <group rotation={[-Math.PI / 2, 0, 3.4]} scale={0.315}>
+      <group rotation={[-Math.PI / 2, 0, 3.5]} scale={0.315}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <group position={[-1.145, -2.841, -1.506]} scale={[1, 1, 0.876]}>
             <mesh

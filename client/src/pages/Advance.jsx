@@ -2,6 +2,8 @@ import { Canvas } from "@react-three/fiber";
 import { Experience } from "../components/Experience";
 import UserInput from "../components/UserInput";
 import { useState } from "react";
+import './Advance.css';
+import logo from '../assets/loding.gif';
 
 function App() {
   const [response, setResponse] = useState({
@@ -13,14 +15,20 @@ function App() {
   });
 
   const [isChatbotReady, setIsChatbotReady] = useState(false);
+
   return (
-    <div className="main-container" data-chatbot-ready={isChatbotReady} style={{ height: "300px", display: "flex" }}>
-      <div className="canvas-wrapper" style={{ flex: 1 }}>
+    <div className="main-container" data-chatbot-ready={isChatbotReady}>
+      {!isChatbotReady && (
+        <div className="loading-overlay">
+          <img src = {logo} alt="Loading..." className="loading-gif" />
+        </div>
+      )}
+      <div className="canvas-wrapper">
         <Canvas shadows camera={{ position: [0, 0, 8], fov: 42 }} className="canvas">
           <color attach="background" args={["#ececec"]} />
           <Experience response={response} />
         </Canvas>
-        <UserInput setResponse={setResponse} isChatbotReady={isChatbotReady} setIsChatbotReady={setIsChatbotReady} response={response}/>
+        <UserInput setResponse={setResponse} isChatbotReady={isChatbotReady} setIsChatbotReady={setIsChatbotReady} response={response} />
       </div>
     </div>
   );

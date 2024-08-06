@@ -208,7 +208,7 @@ export function Avatar(props) {
     />
     <skinnedMesh
         geometry={nodes.Wolf3D_Outfit_Top.geometry}
-        material={new THREE.MeshStandardMaterial({ color: new THREE.Color("") })}  
+        material={new THREE.MeshStandardMaterial({ color: new THREE.Color("#18F3E9") })}  
         skeleton={nodes.Wolf3D_Outfit_Top.skeleton}
     />
     <skinnedMesh

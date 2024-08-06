@@ -7,7 +7,6 @@ const process = require("process");
 const cors = require('cors')
 const fs = require('fs');
 const path = require('path');
-const fetch = require('node-fetch');
 
 dotenv.config();
 const Groq = require('groq-sdk');
@@ -81,13 +80,15 @@ io.on("connection", (socket) => {
 
 //READING
 
-const groq = new Groq({ apiKey: "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" });
+
+const groq = new Groq({ apiKey: "api key" });
 
 const fetchParagraph = async () => {
-    const response = await fetch('https://baconipsum.com/api/?type=meat-and-filler');
-    const data = await response.json();
-    return data;
-  };
+  const { default: fetch } = await import('node-fetch');
+  const response = await fetch('http://metaphorpsum.com/paragraphs/8');
+  const data = await response.text();
+  return data;
+};
   const generateQuestions = async (paragraph) => {
     const prompt = `
     Generate exactly 5 multiple-choice questions from the following paragraph. Each question should have four options (A, B, C, D) and the correct answer. Format the response as a JSON object with the following structure:
