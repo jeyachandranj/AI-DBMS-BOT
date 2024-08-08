@@ -81,7 +81,7 @@ io.on("connection", (socket) => {
 //READING
 
 
-const groq = new Groq({ apiKey: "api key" });
+const groq = new Groq({ apiKey: "" });
 
 const fetchParagraph = async () => {
   const { default: fetch } = await import('node-fetch');

@@ -1,14 +1,35 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+  margin: 0; /* Remove default margin */
+  background-image: url('../assets/backGround.svg'); /* Path to your SVG file */
+  background-size: cover; /* Adjust this depending on your design needs */
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+
+}
 
 figure {
   display: grid;
-  
-  border-radius: 1rem;
+  border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
+  width: 200px;
+  height: 200px; 
+  margin: 1rem;
+   
 }
 figure > * {
   grid-area: 1/1;
   transition: .4s;
+}
+figure img {
+  width: 100%; /* Ensure the image fits within the circle */
+  height: 100%; /* Ensure the image fits within the circle */
+  object-fit: cover; /* Maintain aspect ratio and cover the circle */
 }
 figure figcaption {
   display: grid;
@@ -18,28 +39,13 @@ figure figcaption {
   font-weight: bold;
   color: #ffffff;
   padding: .75rem;
-  background: var(--c,#0009);
-  clip-path: inset(0 var(--_i,100%) 0 0);
-
+  background: var(--c, #0009);
+  clip-path: inset(0 var(--_i, 100%) 0 0);
   margin: -1px;
 }
-figure:hover figcaption{
+figure:hover figcaption {
   --_i: 0%;
 }
 figure:hover img {
   transform: scale(1.2);
-}
-
-
-.home-skills-background {
-  background-image: url('../assets/backGround.svg'); 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh; /* Adjust height as needed */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-    
+}   

@@ -1,60 +1,48 @@
-import React from 'react';
-import './Footer.css';
-import { IonIcon } from '@ionic/react';
-import { logoFacebook, logoTwitter, logoLinkedin, logoInstagram } from 'ionicons/icons';
 
-function Footer() {
+import React from 'react';
+import './Footer.css'; // Make sure you have your CSS in this file
+
+const Footer = () => {
   return (
-    <div className="App" style={{height:"50px"}}>
-      <footer className="footer">
-        <div className="waves">
-          <div className="wave" id="wave1"></div>
-          <div className="wave" id="wave2"></div>
-          <div className="wave" id="wave3"></div>
-          <div className="wave" id="wave4"></div>
+    <footer className="footer">
+      <div className="footer__container">
+        <div className="footer__content">
+          <h3 className="footer__title">Our Services</h3>
+          <ul className="footer__links">
+            <li><a href="#" className="footer__link">Support</a></li>
+            <li><a href="#" className="footer__link">Donate</a></li>
+            <li><a href="#" className="footer__link">Report a bug</a></li>
+            <li><a href="#" className="footer__link">Terms of Service</a></li>
+          </ul>
         </div>
-        <ul className="social-icon">
-          <li className="social-icon__item">
-            <a className="social-icon__link" href="#">
-              <IonIcon icon={logoFacebook} />
-            </a>
-          </li>
-          <li className="social-icon__item">
-            <a className="social-icon__link" href="#">
-              <IonIcon icon={logoTwitter} />
-            </a>
-          </li>
-          <li className="social-icon__item">
-            <a className="social-icon__link" href="#">
-              <IonIcon icon={logoLinkedin} />
-            </a>
-          </li>
-          <li className="social-icon__item">
-            <a className="social-icon__link" href="#">
-              <IonIcon icon={logoInstagram} />
-            </a>
-          </li>
-        </ul>
-        <ul className="menu">
-          <li className="menu__item">
-            <a className="menu__link" href="#">Home</a>
-          </li>
-          <li className="menu__item">
-            <a className="menu__link" href="#">About</a>
-          </li>
-          <li className="menu__item">
-            <a className="menu__link" href="#">Services</a>
-          </li>
-          <li className="menu__item">
-            <a className="menu__link" href="#">Team</a>
-          </li>
-          <li className="menu__item">
-            <a className="menu__link" href="#">Contact</a>
-          </li>
-        </ul>
-      </footer>
-    </div>
+
+        <div className="footer__content">
+          <h3 className="footer__title">Our Company</h3>
+          <ul className="footer__links">
+            <li><a href="#" className="footer__link">Blog</a></li>
+            <li><a href="#" className="footer__link">Our mission</a></li>
+            <li><a href="#" className="footer__link">Get in touch</a></li>
+          </ul>
+        </div>
+
+        <div className="footer__content">
+          <h3 className="footer__title">Community</h3>
+          <ul className="footer__links">
+            <li><a href="#" className="footer__link">Support</a></li>
+            <li><a href="#" className="footer__link">Questions</a></li>
+            <li><a href="#" className="footer__link">Usage help</a></li>
+          </ul>
+        </div>
+
+        <div className="footer__social">
+          <a href="#" className="footer__social-link"><i className="bx bxl-facebook-circle"></i></a>
+          <a href="#" className="footer__social-link"><i className="bx bxl-github"></i></a>
+          <a href="#" className="footer__social-link"><i className="bx bxl-instagram"></i></a>
+        </div>
+      </div>
+
+    </footer>
   );
-}
+};
 
 export default Footer;
