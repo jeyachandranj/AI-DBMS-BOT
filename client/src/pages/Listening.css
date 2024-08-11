@@ -1,0 +1,19 @@
+
+  h1 {
+    margin-bottom: 40px;
+  }
+  
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  .player-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+  }
+  
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }

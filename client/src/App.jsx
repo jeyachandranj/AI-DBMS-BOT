@@ -7,6 +7,7 @@ import HomeSkills from './pages/HomeSkills';
 import Advance from './pages/Advance';
 import Reading from './pages/Reading';
 import Writing from './pages/Writing';
+import Listen from './pages/Listening';
 
 function App() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function App() {
         <Route path="/advance" element={<Advance />} />
         <Route path="/read" element={<Reading />} />
         <Route path="/write" element={<Writing />} />
+        <Route path="/listen" element={<Listen/>}/>
       </Routes>
       {location.pathname !== '/advance' && <Footer />}
     </div>

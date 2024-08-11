@@ -6,6 +6,7 @@ const Chatbot = require("./chatEngine.js");
 const process = require("process");
 const cors = require('cors')
 const fs = require('fs');
+const bodyParser = require('body-parser');
 const path = require('path');
 
 dotenv.config();
@@ -81,7 +82,7 @@ io.on("connection", (socket) => {
 //READING
 
 
-const groq = new Groq({ apiKey: "" });
+const groq = new Groq({ apiKey: "API-KEY" });
 
 const fetchParagraph = async () => {
   const { default: fetch } = await import('node-fetch');
@@ -138,8 +139,10 @@ const fetchParagraph = async () => {
         throw new Error("The response content is empty.");
       }
 
+
+    return content;
+
   
-        return content;
     } catch (error) {
       console.error('Error generating questions:', error);
       return {
@@ -227,6 +230,28 @@ async function generateFeedback(letter) {
     throw new Error('Failed to generate feedback');
   }
 }
+
+//Listening
+app.use(bodyParser.json());
+
+app.post('listen-generate-content', async (req, res) => {
+  const { paragraph } = req.body;
+  console.log("ppp",paragraph);
+
+  if (!paragraph) {
+    return res.status(400).send("No paragraph provided");
+  }
+
+  try {
+    const result = await generateQuestions(paragraph);
+    const questions = JSON.parse(result);
+
+    res.json({ paragraph, questions });
+  } catch (error) {
+    console.error('Error generating content:', error);
+    res.status(500).send("Error generating content");
+  }
+});
 
 
 
