@@ -5,6 +5,7 @@ const Questions = ({ questions }) => {
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.questions.length).fill(""));
   const [score, setScore] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log("jjjjjjjjjjj");
 
   const handleChange = (e, index) => {
     const newAnswers = [...selectedAnswers];

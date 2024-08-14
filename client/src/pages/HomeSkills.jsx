@@ -13,7 +13,7 @@ function HomeSkills() {
     <>
     <div className='row'>
       <div className='col-5 p-5-m' style={{marginLeft:'250px'}}>
-        <Card img={i3} name="Listen"/>
+       <Link to='/listen'><Card img={i3} name="Listen"/></Link>
       </div>
       <div className='col-5 p-5-m'>
         <Card img={i4} name="Speak"/>

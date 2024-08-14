@@ -22,7 +22,7 @@ class Chatbot {
         dotenv.config();
         this.socket_id = null;
         this.groq = new Groq({
-            apiKey: "API-KEY",
+            apiKey: "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",
         });
 
         if (public_path) {

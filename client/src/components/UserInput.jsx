@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useChatbot } from "./useChatbot";
 import debounce from "lodash.debounce";
 import SettingsDisplay from "./SettingsDisplay";
-import { FaMicrophone } from "react-icons/fa";
-import { BsChatTextFill } from "react-icons/bs";
 import mic from '../assets/mic.png';
 import '../pages/Advance.css';
 
@@ -30,7 +28,6 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
 
   const [speechText, setSpeechText] = useState("");
   const [listening, setListening] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
   const [chunks, setChunks] = useState([]);
 
@@ -50,14 +47,15 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
         const transcript = event.results[event.results.length - 1][0].transcript.trim();
         console.log("Speech to Text:", transcript);
         setSpeechText(transcript);
-        console.log("speech",speechText);
       };
-
       recognition.current.onerror = (event) => {
         console.log("Speech recognition error:", event.error);
       };
     }
   }, []);
+
+  useEffect(() => { console.log("Updated speechText:", speechText); }, [speechText]);
+
 
   const debouncedSendMessage = debounce((message) => {
     if (!message) return;
@@ -89,7 +87,7 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
     if (listening && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [listening, isClicked]);
+  }, [listening]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -108,16 +106,12 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
     };
   }, [speechText]);
 
-  const handleClick = () => {
-    setIsClicked(!isClicked);
-  };
-
   useEffect(() => {
     if (response.response) {
       const words = response.response.split(' ');
       const newChunks = [];
-      for (let i = 0; i < words.length; i += 7) {
-        newChunks.push(words.slice(i, i + 7).join(' '));
+      for (let i = 0; i < words.length; i += 5) { // Group words into chunks of 3
+        newChunks.push(words.slice(i, i + 5).join(' '));
       }
       setChunks(newChunks);
       setCurrentChunkIndex(0);
@@ -132,6 +126,7 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
             return prevIndex + 1;
           } else {
             clearInterval(timer);
+            setChunks([]); // Clear chunks to hide the box after completion
             return prevIndex;
           }
         });
@@ -143,33 +138,18 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
   return (
     <div className="chatbotInputWrap">
       {chunks.length > 0 && (
-        <div className="chatbotResponse">
+        <div className="chatbotResponse" style={{border:"3px solid black",backgroundColor:"white",marginLeft:"220px", padding: "10px", fontSize: "20px", whiteSpace: "pre-wrap"}}>
           {chunks[currentChunkIndex]}
         </div>
       )}
       {isChatbotReady ? (
         <section className="chatbotInputContainer">
-          <div>
-            <div className="icons-container">
-              <button
-                className={`btn-class-name ${isClicked ? 'chat-active' : 'microphone-active'}`}
-                onClick={handleClick}
-              >
-                <span className="back"></span>
-                <span className="front">
-                  {isClicked ? <BsChatTextFill /> : <FaMicrophone />}
-                </span>
-              </button>
-            </div>
-          </div>
           <div className="chatbotInput" data-listening={listening}>
             <div className="chatbotInput_container">
               <form onSubmit={(e) => e.preventDefault()} className="inputForm">
-                {isClicked ? (
                   <div className="microphoneIcon" onClick={toggleListening}>
                     <img src={mic} style={{ width: "100px", height: "100px", marginBottom: "50px" }} />
                   </div>
-                ) : (
                   <input
                     value={speechText}
                     ref={inputRef}
@@ -177,7 +157,6 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
                     style={{ color: "black", fontSize: "30px" }}
                     placeholder="Type a message..."
                   />
-                )}
                 <div className="settingsButton" onClick={() => setVisible(true)}>
                   <i className="fas fa-cog"></i>
                 </div>

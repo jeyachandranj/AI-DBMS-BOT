@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
 //READING
 
 
-const groq = new Groq({ apiKey: "API-KEY" });
+const groq = new Groq({ apiKey: "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" });
 
 const fetchParagraph = async () => {
   const { default: fetch } = await import('node-fetch');
@@ -234,18 +234,15 @@ async function generateFeedback(letter) {
 //Listening
 app.use(bodyParser.json());
 
-app.post('listen-generate-content', async (req, res) => {
+app.post('/listen-generate-content', async (req, res) => {
   const { paragraph } = req.body;
   console.log("ppp",paragraph);
-
   if (!paragraph) {
     return res.status(400).send("No paragraph provided");
   }
-
   try {
     const result = await generateQuestions(paragraph);
     const questions = JSON.parse(result);
-
     res.json({ paragraph, questions });
   } catch (error) {
     console.error('Error generating content:', error);

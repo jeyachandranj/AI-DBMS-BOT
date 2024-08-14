@@ -1,31 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import videos from '../components/Skill/videos.json';
-import Questions from '../components/Skill/Questions';
 
 function Listening() {
   const [randomVideo, setRandomVideo] = useState(null);
   const [showQuestionPage, setShowQuestionPage] = useState(false);
   const [questions, setQuestions] = useState(null);
   const [paragraph, setParagraph] = useState('');
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [score, setScore] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const selectRandomVideo = () => {
-      const randomIndex = Math.floor(Math.random() * videos.length);
-      setRandomVideo(videos[randomIndex]);
-    };
+  const handleChange = (e, index) => {
+    const newAnswers = [...selectedAnswers];
+    newAnswers[index] = e.target.value;
+    setSelectedAnswers(newAnswers);
+  };
 
-    selectRandomVideo();
-
-    const timer = setTimeout(() => {
-      setShowQuestionPage(true);
-      if (randomVideo) {
-        fetchParagraphAndGenerateQuestions(randomVideo.subtitle);
+  const handleSubmit = () => {
+    let newScore = 0;
+    questions.forEach((question, index) => {
+      if (question.answer === selectedAnswers[index]) {
+        newScore += 1;
       }
-    }, 3000);
+    });
+    setScore(newScore);
+    setIsModalOpen(true);
+  };
 
-    return () => clearTimeout(timer);
-  }, [randomVideo]); 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const fetchParagraphAndGenerateQuestions = async (subtitle) => {
     try {
@@ -45,11 +50,31 @@ function Listening() {
 
       const data = await response.json();
       setParagraph(data.paragraph);
-      setQuestions(data.questions);
+      setQuestions(data.questions.questions);
+      setShowQuestionPage(true);  // Move this here to ensure it's called after questions are set
     } catch (error) {
       console.error('Error fetching questions:', error);
     }
   };
+
+  useEffect(() => {
+    const selectRandomVideo = () => {
+      const randomIndex = Math.floor(Math.random() * videos.length);
+      setRandomVideo(videos[randomIndex]);
+    };
+
+    selectRandomVideo();
+  }, []);
+
+  useEffect(() => {
+    if (randomVideo) {
+      const timer = setTimeout(() => {
+        fetchParagraphAndGenerateQuestions(randomVideo.subtitle);
+      }, 30000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [randomVideo]);
 
   return (
     <div className="App">
@@ -75,7 +100,43 @@ function Listening() {
         </>
       ) : (
         <div className="question-page">
-            <Questions questions={questions}/>
+            <div className="questions-container">
+              <h2 className="questions-header">Questions</h2>
+              {Array.isArray(questions) && questions.length > 0 ? (
+                questions.map((q, index) => (
+                  <div key={index} className="question-block">
+                    <p className="question-text"><strong>Q{index + 1}:</strong> {q.question}</p>
+                    <div className="options-container">
+                      {Object.keys(q.options).map((optionKey, i) => (
+                        <label key={i} className="option-label">
+                          <input
+                            type="radio"
+                            name={`question-${index}`}
+                            value={optionKey}
+                            onChange={(e) => handleChange(e, index)}
+                            checked={selectedAnswers[index] === optionKey}
+                            className="option-input"
+                          />
+                          {q.options[optionKey]}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No questions available.</p>
+              )}
+              <button onClick={handleSubmit} className="submit-button">Submit</button>
+
+              {isModalOpen && (
+                <div className="score-modal" style={{ display: 'flex' }}>
+                  <div className="score-modal-content">
+                    <span className="close-button" onClick={closeModal}>&times;</span>
+                    <h3>Your Score: {score} / {questions.length}</h3>
+                  </div>
+                </div>
+              )}
+            </div>
         </div>
       )}
     </div>
