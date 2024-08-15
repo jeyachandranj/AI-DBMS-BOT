@@ -7,15 +7,6 @@ const pdfExtract = new PDFExtract();
 const fs = require("fs");
 const request = require("request");
 const Groq = require("groq-sdk");
-const mongoose = require("mongoose");
-
-const chatSchema = new mongoose.Schema({
-    role: String,
-    content: String,
-    audio: String,
-});
-
-const ChatModel = mongoose.model("Chat", chatSchema);
 
 class Chatbot {
     constructor(public_path) {
@@ -47,8 +38,6 @@ class Chatbot {
         if (!fs.existsSync(this.publicDir + "/temp/chats")) {
             fs.mkdirSync(this.publicDir + "/temp/chats");
         }
-
-        mongoose.connect('mongodb://localhost:27017/live-interview');
     }
 
     async initialize(settings, socket_id) {
@@ -103,23 +92,23 @@ class Chatbot {
     async downloadResume() {
         return new Promise((resolve, reject) => {
             let resume_text = "hi";
-            	request(this.settings.link_to_resume, { encoding: null }, (err, res, body) => {
-            		fs.writeFileSync(this.publicDir + "/temp/resume.pdf", body);
-            		const buffer = fs.readFileSync(this.publicDir + "/temp/resume.pdf");
-            		const options = {};
-            		pdfExtract.extractBuffer(buffer, options, (err, data) => {
-            			if (err) return console.log(err);
-            			let content_array = data.pages[0].content;
-            			for (let i = 0; i < content_array.length; i++) {
-            				resume_text += content_array[i].str + " ";
-            			}
-            			resolve(resume_text);
-                        console.log("---------------------------------------------------------------------------------------")
-                        console.log("resume text",resume_text);
-                        console.log("---------------------------------------------------------------------------------------")
-                        console.log("resume-title",this.settings);
-            		});
-            	});
+            request(this.settings.link_to_resume, { encoding: null }, (err, res, body) => {
+                fs.writeFileSync(this.publicDir + "/temp/resume.pdf", body);
+                const buffer = fs.readFileSync(this.publicDir + "/temp/resume.pdf");
+                const options = {};
+                pdfExtract.extractBuffer(buffer, options, (err, data) => {
+                    if (err) return console.log(err);
+                    let content_array = data.pages[0].content;
+                    for (let i = 0; i < content_array.length; i++) {
+                        resume_text += content_array[i].str + " ";
+                    }
+                    resolve(resume_text);
+                    console.log("---------------------------------------------------------------------------------------")
+                    console.log("resume text",resume_text);
+                    console.log("---------------------------------------------------------------------------------------")
+                    console.log("resume-title",this.settings);
+                });
+            });
         });
     }
 
@@ -140,12 +129,6 @@ class Chatbot {
                     role: "assistant",
                     content: completion.choices[0].message.content,
                 });
-
-                const chatEntry = new ChatModel({
-                    role: "assistant",
-                    content: completion.choices[0].message.content,
-                });
-                await chatEntry.save();
 
                 await this.exportChat();
 
@@ -217,14 +200,6 @@ class Chatbot {
         });
 
         synthesizer.close();
-
-        // Save audio file path to MongoDB
-        const chatEntry = new ChatModel({
-            role: "assistant",
-            content: text,
-            audio: audioFilePath,
-        });
-        await chatEntry.save();
 
         return { audioFilePath: audioFilePath, visemes: visemes };
     }

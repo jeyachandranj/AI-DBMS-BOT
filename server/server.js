@@ -252,8 +252,6 @@ app.post('/listen-generate-content', async (req, res) => {
 
 
 
-
-
 const port = process.env.PORT || 3000;
 
 server.listen(port, () => {
@@ -261,4 +259,3 @@ server.listen(port, () => {
 });
 
 
-//{"response_code":0,"results":[{"type":"multiple","difficulty":"medium","category":"Entertainment: Video Games","question":"Which of these blocks in &quot;Minecraft&quot; has the lowest blast resistance?","correct_answer":"Sand","incorrect_answers":["End Stone","Water","Wood Planks"]},{"type":"multiple","difficulty":"hard","category":"Vehicles","question":"Which Variable Valve Timing technology is used by BMW?","correct_answer":"VANOS","incorrect_answers":["VVT-iw","VVEL","MultiAir"]},{"type":"multiple","difficulty":"hard","category":"General Knowledge","question":"Nephelococcygia is the practice of doing what?","correct_answer":"Finding shapes in clouds","incorrect_answers":["Sleeping with your eyes open","Breaking glass with your voice","Swimming in freezing water"]},{"type":"multiple","difficulty":"easy","category":"Entertainment: Video Games","question":"&quot;The Potato Sack&quot; was a collection of indie games released on Steam in 2011 as a promotion for which game?","correct_answer":"Portal 2","incorrect_answers":["Left 4 Dead 2","Half-Life 3","Dota 2"]},{"type":"multiple","difficulty":"medium","category":"Entertainment: Music","question":"Who is the founder and leader of industrial rock band, &#039;Nine Inch Nails&#039;?","correct_answer":"Trent Reznor","incorrect_answers":["Marilyn Manson","Robin Finck","Josh Homme"]}]}

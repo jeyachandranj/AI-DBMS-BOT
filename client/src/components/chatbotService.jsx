@@ -6,7 +6,7 @@ class ChatbotService {
 		//this.socket = io();
 
 		// Development
-		 this.socket = io("localhost:3000");
+		 this.socket = io("https://ai-interview-boj8.onrender.com/");
 	}
 
 	async init(settings) {
