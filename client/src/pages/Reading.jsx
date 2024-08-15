@@ -17,7 +17,7 @@ const Reading = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const response = await axios.post('http://localhost:3000/generate-content');
+        const response = await axios.post('https://ai-interview-71dz.onrender.com/generate-content');
         const data = response.data;
 
         setParagraph(data.paragraph);

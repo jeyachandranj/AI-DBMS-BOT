@@ -15,7 +15,7 @@ const Writing = () => {
 
   const fetchQuestion = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/question');
+      const response = await axios.get('https://ai-interview-71dz.onrender.com/api/question');
       setQuestion(response.data.question);
     } catch (error) {
       console.error('Error fetching question:', error);
@@ -25,7 +25,7 @@ const Writing = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/submit', { letter });
+      const response = await axios.post('https://ai-interview-71dz.onrender.com/api/submit', { letter });
       setFeedback(response.data);
       setShowFeedback(true);
     } catch (error) {
