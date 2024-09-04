@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
 //READING
 
 
-const groq = new Groq({ apiKey: "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" });
+const groq = new Groq({ apiKey: "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" });
 
 const fetchParagraph = async () => {
   const { default: fetch } = await import('node-fetch');

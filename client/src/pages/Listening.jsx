@@ -34,7 +34,7 @@ function Listening() {
 
   const fetchParagraphAndGenerateQuestions = async (subtitle) => {
     try {
-      const response = await fetch('https://ai-interview-71dz.onrender.com/listen-generate-content', {
+      const response = await fetch('http://localhost:3000/listen-generate-content', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
