@@ -1,0 +1,268 @@
+
+  .speech-recorder {
+    width: 60%;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .topic-input,
+  .answer-textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .answer-textarea {
+    height: 100px;
+    resize: none;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .mic-button {
+    background-color: #008080;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .check-button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .score-display {
+    width: 35%;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .score-display h2 {
+    text-align: center;
+  }
+  
+  .score-value {
+    font-size: 48px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .score-metrics {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .score-metrics div {
+    margin-bottom: 10px;
+  }
+  
+
+  .speech-recorder {
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .topic-label,
+  .answer-label {
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .topic-display {
+    font-weight: bold;
+    color: #007BFF;
+  }
+  
+  .answer-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    resize: none;
+    transition: border-color 0.3s;
+  }
+  
+  .answer-textarea:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .mic-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1em;
+  }
+  
+  .mic-button:hover {
+    background-color: #218838;
+  }
+  
+  .mic-button.active {
+    background-color: #dc3545;
+  }
+  
+  .stop-button {
+    background-color: #dc3545;
+  }
+  
+  .stop-button:hover {
+    background-color: #c82333;
+  }
+  
+  .status-text {
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .check-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    width: 100%;
+  }
+  
+  .check-button:hover {
+    background-color: #0056b3;
+  }
+  
+
+
+.SpeechRecorder {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.ScoreDisplay {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+}
+
+.ScoreDisplay h3 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
+.ScoreItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fc;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+
+.ScoreItem span {
+  font-size: 18px;
+}
+
+.ScoreValue {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.ScoreValue.NA {
+  color: #bbb;
+}
+
+.SpeechButton {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px 0;
+}
+
+.SpeechButton:hover {
+  background-color: #0056b3;
+}
+
+.EnhanceButton {
+  background-color: #6f42c1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.EnhanceButton:hover {
+  background-color: #5a31a8;
+}
+
+.CheckButton {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.CheckButton:hover {
+  background-color: #c82333;
+}

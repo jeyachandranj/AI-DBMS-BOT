@@ -206,8 +206,7 @@ async function generateFeedback(letter) {
       "spellingMistakes": 5,
       "totalMarks": 20,
       "feedback": "sentence"
-    }
-      
+    }      
         Provide the response in the JSON format shown above without any additional text or explanation and Json List Must contain only 1 Object
 \n\n${letter}`;
 
@@ -250,6 +249,108 @@ app.post('/listen-generate-content', async (req, res) => {
   }
 });
 
+
+//Speaking
+
+app.post('/analyze', async (req, res) => {
+  const { text } = req.body;
+
+  if (!text) {
+      return res.status(400).send('Text is required for analysis');
+  }
+
+  // Strict prompt to ensure JSON format
+  const prompt = `
+  Please analyze the following speech text and return only the JSON object, with integer values for the scores and string feedbacks for each category.
+
+  The analysis should be based on these categories, and all values must be out of 10:
+  
+  - Vocabulary Complexity
+  - Vocabulary Repetition
+  - Pronunciation
+  - Task Response
+  - Fluency
+  - Lexical Resource
+  - Grammatical Range & Accuracy
+
+  Provide an overall score out of 100 with feedback for the overall performance.
+
+  The JSON object must have the following structure:
+  {
+    "vocabularyComplexity": {
+      "score": 0-10,
+      "feedback": "string"
+    },
+    "vocabularyRepetition": {
+      "score": 0-10,
+      "feedback": "string"
+    },
+    "pronunciation": {
+      "score": 0-10,
+      "feedback": "string"
+    },
+    "taskResponse": {
+      "score": 0-10,
+      "feedback": "string"
+    },
+    "fluency": {
+      "score": 0-10,
+      "feedback": "string"
+    },
+    "lexicalResource": {
+      "score": 0-10,
+      "feedback": "string"
+    },
+    "grammaticalRangeAccuracy": {
+      "score": 0-10,
+      "feedback": "string"
+    },
+    "overallScore": {
+      "score": 0-100,
+      "feedback": "string"
+    }
+  }
+
+  Only return the JSON object, without any extra text.
+  
+  Speech Text: "${text}"
+  `;
+
+  try {
+      const response = await groq.chat.completions.create({
+          messages: [
+              {
+                  role: "system",
+                  content: prompt
+              },
+              {
+                  role: "user",
+                  content: text
+              }
+          ],
+          model: "llama3-8b-8192"
+      });
+
+      let content = response.choices[0]?.message?.content;
+      console.log('Raw response content:', content);
+
+      // Try to clean the response in case it has extra text
+      content = content.trim();
+
+      // Attempt to parse JSON
+      try {
+          const analysisResult = JSON.parse(content);
+          res.json(analysisResult);
+      } catch (jsonError) {
+          console.error('Error parsing JSON response:', jsonError);
+          console.log('Raw response content:', content); // Log raw content for debugging
+          res.status(500).send('Error analyzing the text: Invalid JSON format');
+      }
+  } catch (error) {
+      console.error('Error sending text to Groq AI:', error.message);
+      res.status(500).send('Error analyzing the text');
+  }
+});
 
 
 const port = process.env.PORT || 3000;

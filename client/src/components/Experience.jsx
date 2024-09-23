@@ -32,7 +32,7 @@ export const Experience = ({ response }) => {
     deskScale: 2,
     tablePosition: [-0.8, -1.5, 6],
     tableScale: 1.4,
-    roomPosition: [-0.9, -1.2, 3],
+    roomPosition: [-0.5, -1, 2],
     roomScale: 1.8,
   };
 
@@ -40,8 +40,8 @@ export const Experience = ({ response }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const duration = 8000; 
-    const delay = 3000; 
+    const duration = 1; 
+    const delay = 1; 
     const totalDuration = duration + delay; 
     let startTime;
 

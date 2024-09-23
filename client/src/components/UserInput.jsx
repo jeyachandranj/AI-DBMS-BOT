@@ -136,7 +136,7 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
   }, [chunks]);
 
   return (
-    <div className="chatbotInputWrap">
+    <div className="chatbotInputWrap" style={{width:"300px"}}>
       {chunks.length > 0 && (
         <div className="chatbotResponse" style={{border:"3px solid black",backgroundColor:"white",marginLeft:"220px", padding: "10px", fontSize: "20px", whiteSpace: "pre-wrap"}}>
           {chunks[currentChunkIndex]}
@@ -147,14 +147,14 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
           <div className="chatbotInput" data-listening={listening}>
             <div className="chatbotInput_container">
               <form onSubmit={(e) => e.preventDefault()} className="inputForm">
-                  <div className="microphoneIcon" onClick={toggleListening}>
+                  <div className="microphoneIcon" onClick={toggleListening} >
                     <img src={mic} style={{ width: "100px", height: "100px", marginBottom: "50px" }} />
                   </div>
                   <input
                     value={speechText}
                     ref={inputRef}
                     onChange={(e) => setSpeechText(e.target.value)}
-                    style={{ color: "black", fontSize: "30px" }}
+                    style={{ color: "white",backgroundColor:"black", fontSize: "30px" ,marginLeft:"1000px",width:"900px"}}
                     placeholder="Type a message..."
                   />
                 <div className="settingsButton" onClick={() => setVisible(true)}>
@@ -163,7 +163,7 @@ const UserInput = ({ setResponse, isChatbotReady, setIsChatbotReady, response })
               </form>
             </div>
           </div>
-          <div className="chatbotSettings" data-visible={visible}>
+          <div className="chatbotSettings" data-visible={visible} style={{}}>
             <SettingsDisplay settings={settings} setSettings={setSettings} visible={visible} setVisible={setVisible} />
           </div>
         </section>

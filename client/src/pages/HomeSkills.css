@@ -1,51 +1,121 @@
 body {
+  background: url('../assets/backGround.jpg') no-repeat; /* Background image will not repeat */
+  background-size: cover;  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e0f7fa; /* Light blue background */
+  height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full height of the viewport */
-  margin: 0; /* Remove default margin */
-  background-image: url('../assets/backGround.svg'); /* Path to your SVG file */
-  background-size: cover; /* Adjust this depending on your design needs */
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-
+  align-items: center; /* Center content vertically */
+  flex-direction: column; /* Stack items vertically */
 }
 
-figure {
-  display: grid;
-  border-radius: 50%;
+
+.header {
+  width: 100%;
+  background-color: #000000; 
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative; 
+  z-index: 10; 
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto; /* Adds margin at the top */
+  padding: 40px; /* Adjust padding as needed */
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  border-color: white;
+  justify-content: center; /* Center the cards horizontally */
+  gap: 20px; /* Space between cards */
+}
+
+.skill-card {
+  margin-top: 40px;
+  flex: 0 0 calc(50% - 20px); /* Adjust this for spacing between cards */
+  max-width: calc(50% - 20px); /* Adjust this for spacing between cards */
+  border-radius: 12px; /* Increased border-radius for better styling */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhanced box-shadow for larger cards */
   overflow: hidden;
+  border-style: solid;
+  border-color: white;
+  /* background-color: #fff; */
+
   cursor: pointer;
-  width: 200px;
-  height: 200px; 
-  margin: 1rem;
-   
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 80px;
+  /* padding: 30px;  */
+  height: 400px; /* Increased height of the card */
 }
-figure > * {
-  grid-area: 1/1;
-  transition: .4s;
+
+.skill-card:hover {
+  transform: translateY(-10px); /* Enhanced hover effect */
 }
-figure img {
-  width: 100%; /* Ensure the image fits within the circle */
-  height: 100%; /* Ensure the image fits within the circle */
-  object-fit: cover; /* Maintain aspect ratio and cover the circle */
+
+.card img {
+  width: 150px; /* Increased width of the image */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 20px;
 }
-figure figcaption {
-  display: grid;
-  align-items: end;
-  font-family: sans-serif;
-  font-size: 2.3rem;
+
+.card h3 {
+  font-size: 28px; /* Increased font size for title */
   font-weight: bold;
-  color: #ffffff;
-  padding: .75rem;
-  background: var(--c, #0009);
-  clip-path: inset(0 var(--_i, 100%) 0 0);
-  margin: -1px;
+  margin-bottom: 10px;
 }
-figure:hover figcaption {
-  --_i: 0%;
+
+.skill-description {
+  font-size: 18px; /* Increased font size for description */
+  color: #666;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px; /* Adjusted margin for better spacing */
 }
-figure:hover img {
-  transform: scale(1.2);
-}   
+
+@media (max-width: 768px) {
+  .skill-card {
+    flex: 0 0 calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    height: auto; /* Let height adjust automatically on smaller screens */
+  }
+}
+h2 {
+  color: #000000;
+  margin-bottom: 20px;
+}
+.modal-full{
+position: fixed;
+z-index: 1000;
+left: 10;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 90px;
+  border-radius: 10px;
+  width: 500px;
+  text-align: center;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}

@@ -6,7 +6,20 @@ const PDFExtract = require("pdf.js-extract").PDFExtract;
 const pdfExtract = new PDFExtract();
 const fs = require("fs");
 const request = require("request");
+const mongoose = require("mongoose");
 const Groq = require("groq-sdk");
+
+mongoose.connect("mongodb://localhost:27017/live-interview")
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.error("MongoDB connection error:", err));
+
+const chatSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    user_msg: { type: String, required: true },
+    ai: { type: String, required: true },
+});
+
+const Chat = mongoose.model("Chat", chatSchema);
 
 class Chatbot {
     constructor(public_path) {
@@ -125,21 +138,28 @@ class Chatbot {
             });
 
             if (completion.choices && completion.choices[0] && completion.choices[0].message) {
+                const aiResponse = completion.choices[0].message.content;
+
+                await Chat.create({
+                    name: "jeyachandran",
+                    user_msg: userInput,
+                    ai: aiResponse,
+                });
+
                 this.messages.push({
                     role: "assistant",
-                    content: completion.choices[0].message.content,
+                    content: aiResponse,
                 });
 
                 await this.exportChat();
 
-                return completion.choices[0].message.content;
+                return aiResponse;
             } else {
                 console.log("Invalid completion format:", completion);
                 throw new Error("Invalid completion format");
             }
         } catch (error) {
-            console.log(error); // Print error
-
+            console.log(error);
             return {
                 error: error.message,
             };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import videos from '../components/Skill/videos.json';
-
+import './Listening.css';
 function Listening() {
   const [randomVideo, setRandomVideo] = useState(null);
   const [showQuestionPage, setShowQuestionPage] = useState(false);
@@ -10,6 +10,7 @@ function Listening() {
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [score, setScore] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // New state for current question
 
   const handleChange = (e, index) => {
     const newAnswers = [...selectedAnswers];
@@ -76,6 +77,18 @@ function Listening() {
     }
   }, [randomVideo]);
 
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+
   return (
     <div className="App">
       {!showQuestionPage ? (
@@ -99,46 +112,55 @@ function Listening() {
           )}
         </>
       ) : (
+        <div className="center-container">
         <div className="question-page">
-            <div className="questions-container">
-              <h2 className="questions-header">Questions</h2>
-              {Array.isArray(questions) && questions.length > 0 ? (
-                questions.map((q, index) => (
-                  <div key={index} className="question-block">
-                    <p className="question-text"><strong>Q{index + 1}:</strong> {q.question}</p>
-                    <div className="options-container">
-                      {Object.keys(q.options).map((optionKey, i) => (
-                        <label key={i} className="option-label">
-                          <input
-                            type="radio"
-                            name={`question-${index}`}
-                            value={optionKey}
-                            onChange={(e) => handleChange(e, index)}
-                            checked={selectedAnswers[index] === optionKey}
-                            className="option-input"
-                          />
-                          {q.options[optionKey]}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>No questions available.</p>
-              )}
-              <button onClick={handleSubmit} className="submit-button">Submit</button>
-
-              {isModalOpen && (
-                <div className="score-modal" style={{ display: 'flex' }}>
-                  <div className="score-modal-content">
-                    <span className="close-button" onClick={closeModal}>&times;</span>
-                    <h3>Your Score: {score} / {questions.length}</h3>
-                  </div>
+          <div className="questions-container">
+            <h2 className="questions-header">Question {currentQuestionIndex + 1} of {questions.length}</h2>
+            {questions && questions.length > 0 && (
+              <div className="question-block">
+                <p className="question-text"><strong>Q{currentQuestionIndex + 1}:</strong> {questions[currentQuestionIndex].question}</p>
+                <div className="options-container">
+                  {Object.keys(questions[currentQuestionIndex].options).map((optionKey, i) => (
+                    <label key={i} className="option-label">
+                      <input
+                        type="radio"
+                        name={`question-${currentQuestionIndex}`}
+                        value={optionKey}
+                        onChange={(e) => handleChange(e, currentQuestionIndex)}
+                        checked={selectedAnswers[currentQuestionIndex] === optionKey}
+                        className="option-input"
+                      />
+                      {questions[currentQuestionIndex].options[optionKey]}
+                    </label>
+                  ))}
                 </div>
-              )}
+              </div>
+            )}
+
+            <div className="navigation-buttons">
+              <button onClick={handlePreviousQuestion} disabled={currentQuestionIndex === 0} className="nav-button">
+                Previous
+              </button>
+              <button onClick={handleNextQuestion} disabled={currentQuestionIndex === questions.length - 1} className="nav-button">
+                Next
+              </button>
             </div>
+
+            {currentQuestionIndex === questions.length - 1 && (
+              <button onClick={handleSubmit} className="submit-button">Submit</button>
+            )}
+
+            {isModalOpen && (
+              <div className="score-modal" style={{ display: 'flex' , color: 'black'}}>
+                <div className="score-modal-content">
+                  <div className="close-button" onClick={closeModal}>X</div>
+                  <h3 class = "score">Your Score: {score} / {questions.length}</h3>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      )}
+      </div>)}
     </div>
   );
 }

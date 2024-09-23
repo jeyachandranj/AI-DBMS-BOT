@@ -1,0 +1,202 @@
+.interview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Optional background color for empty space */
+  }
+  
+  .advance-box {
+    height: 1100px;
+    width: 1000px;
+    margin-right: 200px;
+    background-color: rgb(14, 13, 13);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+  } 
+  
+  .h1-container h1 {
+    font-size: 48px; /* Make the font larger */
+    color: #3a3a3a; /* Set the text color */
+    font-family: 'Roboto', sans-serif; /* Use a custom font (you can replace with your preferred font) */
+    font-weight: bold; /* Bold font weight */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow to the text */
+    letter-spacing: 2px; /* Add spacing between letters */
+    text-transform: uppercase; /* Make all letters uppercase */
+    text-align: center; /* Center the text horizontally */
+    margin-right: 200px; /* Custom margin */
+    margin-bottom: 950px; /* Custom margin */
+    background: linear-gradient(90deg, #ff8a00, #e52e71); /* Add gradient color to the text */
+    -webkit-background-clip: text; /* Apply the gradient to the text */
+    -webkit-text-fill-color: transparent; /* Make the background clip visible */
+  }
+  
+  
+
+  
+  .column {
+    flex: 1; /* Make both columns take up equal space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+  .colorful-button {
+    padding: 15px 30px;
+    background: linear-gradient(90deg, #ff5f6d, #ffc371); /* Vibrant gradient */
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    margin-right: 50px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .colorful-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .colorful-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+.interview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Optional background color for empty space */
+  }
+  
+  .advance-box {
+    height: 1100px;
+    width: 1000px;
+    margin-right: 120px;
+    background-color: rgb(14, 13, 13);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+  } 
+  
+  .h1-container h1 {
+    font-size: 48px; /* Make the font larger */
+    color: #3a3a3a; /* Set the text color */
+    font-family: 'Roboto', sans-serif; /* Use a custom font (you can replace with your preferred font) */
+    font-weight: bold; /* Bold font weight */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow to the text */
+    letter-spacing: 2px; /* Add spacing between letters */
+    text-transform: uppercase; /* Make all letters uppercase */
+    text-align: center; /* Center the text horizontally */
+    margin-right: 200px; /* Custom margin */
+    margin-bottom: 950px; /* Custom margin */
+    background: linear-gradient(90deg, #ff8a00, #e52e71); /* Add gradient color to the text */
+    -webkit-background-clip: text; /* Apply the gradient to the text */
+    -webkit-text-fill-color: transparent; /* Make the background clip visible */
+  }
+  
+  
+
+  
+  .column {
+    flex: 1; /* Make both columns take up equal space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+  .colorful-button {
+    padding: 15px 30px;
+    background: linear-gradient(90deg, #ff5f6d, #ffc371); /* Vibrant gradient */
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    margin-right: 50px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .colorful-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .colorful-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+
+  .animated-title {  
+    font-size: 2.5rem;  
+    background: linear-gradient(90deg, #ff6b6b, #f7b733);  
+    -webkit-background-clip: text;  
+    -webkit-text-fill-color: transparent;  
+    animation: fadeIn 1s ease-in-out;  
+}  
+
+.table-container {  
+    margin: 20px 0;  
+}  
+
+.animated-table {  
+    width: 100%;  
+    border-collapse: collapse;  
+    margin-top: 20px;  
+    font-family: 'Roboto', sans-serif;  
+    font-size: 16px;  
+    overflow: hidden;  
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);  
+    transition: all 0.3s ease;  
+}  
+
+.animated-table th, .animated-table td {  
+    padding: 12px 15px;  
+    text-align: center;  
+    border: 1px solid #ddd;  
+}  
+
+.animated-table th {  
+    background: linear-gradient(90deg, #ff8a00, #e52e71); /* Add gradient color to the text */
+    color: black;  
+    text-transform: uppercase;  
+    font-weight: bold;  
+    letter-spacing: 1px;  
+    transition: background-color 0.3s ease;  
+}  
+
+.animated-table td {  
+    background-color: #f9f9f9;  
+}  
+
+.animated-table tr:nth-child(even) {  
+    background-color: #f2f2f2;  
+}  
+
+.animated-table tr:hover {  
+    background-color: #ddd;  
+    transform: scale(1.02);  
+}  
+
+.animated-table th:hover {  
+    background: linear-gradient(90deg, #ff8a00, #e52e71); /* Add gradient color to the text */
+}  
+
+.colorful-button {  
+    background: linear-gradient(45deg, #ff6b6b, #f7b733);  
+    color: white;  
+    border: none;  
+    transition: transform 0.2s;  
+    margin-top: 20px; /* Spacing above the button */  
+}  
+
+.colorful-button:hover {  
+    transform: scale(1.05);  
+}  
