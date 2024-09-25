@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/Home';
 import HomeSkills from './pages/HomeSkills';
-import Interview from './pages/Interview';
+import Advance from './pages/Advance';
 import Reading from './pages/Reading';
 import Writing from './pages/Writing';
 import Listen from './pages/Listening';
@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/skills" element={<HomeSkills />} />
-        <Route path="/interview" element={<Interview />} />
+        <Route path="/interview" element={<Advance />} />
         <Route path="/read" element={<Reading />} />
         <Route path="/write" element={<Writing />} />
         <Route path="/listen" element={<Listen/>}/>

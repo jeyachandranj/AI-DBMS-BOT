@@ -1,26 +1,11 @@
-import React, { useState } from 'react';
-import SpeechRecorder from './SpeechRecorder';
+import React from 'react';
 import '../../pages/Speaking.css';
 
-function Speaking() {
-  const [scores, setScores] = useState({
-    overall: 0,
-    vocabularyComplexity: 'N/A',
-    vocabularyRepetition: 'N/A',
-    pronunciation: 0,
-    taskResponse: 0,
-    fluency: 0,
-    lexical: 0,
-    grammar: 0,
-  });
-
-  const handleResult = (data) => {
-    setScores(data);
-  };
+function Speaking({ scores }) {
+  console.log("Scores passed to Speaking component:", scores);
 
   return (
-    <div className="App" style={{color:"black",marginLeft:"300px"}}>
-      
+    <div className="App" style={{color:"black", width:"600px"}}>
       <div className="ScoreDisplay">
         <h3>Overall Band Score</h3>
         <div className="ScoreItem">

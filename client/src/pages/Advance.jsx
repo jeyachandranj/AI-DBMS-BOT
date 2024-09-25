@@ -14,6 +14,8 @@ function App() {
     },
   });
 
+  
+
   const [isChatbotReady, setIsChatbotReady] = useState(false);
 
   return (

@@ -13,13 +13,16 @@ mongoose.connect("mongodb://localhost:27017/live-interview")
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.error("MongoDB connection error:", err));
 
-const chatSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    user_msg: { type: String, required: true },
-    ai: { type: String, required: true },
-});
-
+    const chatSchema = new mongoose.Schema({
+        name: { type: String, required: true },
+        user_msg: { type: String, required: true },
+        ai: { type: String, required: true },
+        score: { type: Number, required: true }, // new field for score
+        session: { type: String, required: true }, // new field for session type
+    });
+    
 const Chat = mongoose.model("Chat", chatSchema);
+    
 
 class Chatbot {
     constructor(public_path) {
@@ -130,30 +133,62 @@ class Chatbot {
             role: "user",
             content: userInput,
         });
-
+    
         try {
             const completion = await this.groq.chat.completions.create({
-                messages: this.messages,
+                messages: [
+                    ...this.messages,
+                    {
+                        role: "system",
+                        content: `Please respond to the user's message in valid JSON format as shown below please all responce is json format and also {} inside broket key and value bellow format :
+                        {
+                            "aiResponse": "<your response>",
+                            "score": <integer between 0 and 10>,
+                            "session": "<session type>"
+                        }.
+                        Ensure the JSON is valid and complete, without any additional text. Session types include 'skill', 'project', 'experience', 'company', or 'general'.`
+                    }
+                ],
                 model: "llama3-8b-8192",
             });
-
+    
             if (completion.choices && completion.choices[0] && completion.choices[0].message) {
-                const aiResponse = completion.choices[0].message.content;
-
-                await Chat.create({
-                    name: "jeyachandran",
-                    user_msg: userInput,
-                    ai: aiResponse,
-                });
-
-                this.messages.push({
-                    role: "assistant",
-                    content: aiResponse,
-                });
-
-                await this.exportChat();
-
-                return aiResponse;
+                const aiMessage = completion.choices[0].message.content.trim();
+    
+                // Check if the response starts with '{' and ends with '}'
+                if (aiMessage.startsWith('{') && aiMessage.endsWith('}')) {
+                    try {
+                        // Parse the JSON response from the AI
+                        const parsedResponse = JSON.parse(aiMessage);
+    
+                        const { aiResponse, score, session } = parsedResponse;
+    
+                        // Save the conversation to the database
+                        await Chat.create({
+                            name: "jeyachandran",
+                            user_msg: userInput,
+                            ai: aiResponse,
+                            score, // The score returned by the AI
+                            session, // The session type returned by the AI
+                        });
+    
+                        // Store the assistant's response for the conversation history
+                        this.messages.push({
+                            role: "assistant",
+                            content: aiResponse,
+                        });
+    
+                        await this.exportChat();
+    
+                        return aiResponse;
+                    } catch (jsonParseError) {
+                        console.log("JSON Parsing Error:", jsonParseError);
+                        throw new Error("Failed to parse AI response as JSON");
+                    }
+                } else {
+                    console.log("AI response is not valid JSON:", aiMessage);
+                    throw new Error("AI response is not valid JSON or is incomplete");
+                }
             } else {
                 console.log("Invalid completion format:", completion);
                 throw new Error("Invalid completion format");
@@ -165,6 +200,8 @@ class Chatbot {
             };
         }
     }
+    
+    
 
     async exportChat() {
         console.log("Exporting chat...");

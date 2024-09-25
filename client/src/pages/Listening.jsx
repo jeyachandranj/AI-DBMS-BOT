@@ -1,7 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import videos from '../components/Skill/videos.json';
 import './Listening.css';
+import Confetti from 'react-confetti'; 
+import img from "../assets/tropy.jpg"
+
 function Listening() {
   const [randomVideo, setRandomVideo] = useState(null);
   const [showQuestionPage, setShowQuestionPage] = useState(false);
@@ -88,7 +92,6 @@ function Listening() {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
-
   return (
     <div className="App">
       {!showQuestionPage ? (
@@ -138,10 +141,10 @@ function Listening() {
             )}
 
             <div className="navigation-buttons">
-              <button onClick={handlePreviousQuestion} disabled={currentQuestionIndex === 0} className="nav-button">
-                Previous
+              <button onClick={handlePreviousQuestion} disabled={currentQuestionIndex === 0} className="nav-button1">
+                Prev
               </button>
-              <button onClick={handleNextQuestion} disabled={currentQuestionIndex === questions.length - 1} className="nav-button">
+              <button onClick={handleNextQuestion} disabled={currentQuestionIndex === questions.length - 1} className="nav-button2">
                 Next
               </button>
             </div>
@@ -151,12 +154,15 @@ function Listening() {
             )}
 
             {isModalOpen && (
-              <div className="score-modal" style={{ display: 'flex' , color: 'black'}}>
-                <div className="score-modal-content">
-                  <div className="close-button" onClick={closeModal}>X</div>
-                  <h3 class = "score">Your Score: {score} / {questions.length}</h3>
-                </div>
-              </div>
+      <div className="score-modal"> 
+         <Confetti />
+      
+      <div className="score-modal-content">
+      <div className="close-button" onClick={closeModal}>X</div>
+      <img src={img} alt="Score Image" className="score-image" />
+      <h3 className="score">Your Score: {score} / {questions.length}</h3>
+      </div>
+      </div>
             )}
           </div>
         </div>

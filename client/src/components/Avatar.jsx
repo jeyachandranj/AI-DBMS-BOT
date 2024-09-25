@@ -28,10 +28,12 @@ const animationFiles = {
 
 const sittingTalkingAnimations = ["Sitting Talking", "Sitting Idle", "Having A Meeting"];
 
+// Preload animations
 Object.values(animationFiles).forEach((url) => {
 	useFBX.preload(url);
 });
 
+// ReadyPlayerMe visemes map
 const azureToOculusVisemes = {
 	0: "viseme_sil",
 	1: "viseme_PP",
@@ -57,27 +59,42 @@ const azureToOculusVisemes = {
 	21: "viseme_PP",
 };
 
+
 export function Avatar(props) {
-	const { playAudio, headFollow, smoothMorphTarget, morphTargetSmoothing, animationName } = useControls({
+	// Development
+	// const { playAudio, headFollow, smoothMorphTarget, morphTargetSmoothing, animationName } = useControls({
+	// 	playAudio: true,
+	// 	headFollow: true,
+	// 	smoothMorphTarget: true,
+	// 	morphTargetSmoothing: 0.5,
+	// 	animationName: {
+	// 		value: "Having A Meeting",
+	// 		options: Object.keys(animationFiles),
+	// 	},
+	// });
+	// Production
+	const { playAudio, headFollow, smoothMorphTarget, morphTargetSmoothing, animationName } = {
 		playAudio: true,
 		headFollow: true,
 		smoothMorphTarget: true,
 		morphTargetSmoothing: 0.5,
 		animationName: {
-			value: "Sitting Talking",
+			value: "Having A Meeting",
 			options: Object.keys(animationFiles),
 		},
-	});
-
+	};
 
 	let audio = useMemo(() => {
 		let audioPath = props.response.speechData.audioFilePath;
 		if (!audioPath) {
 			audioPath = "";
 		}
+		// turn to path to URL which is inside the public/temp/audio folder
 		audioPath = audioPath.replace(/\\/g, "/");
+		// Get audio file name
 		audioPath = audioPath.split("/").pop();
-		audioPath = `/temp/audio/${audioPath}`;	
+		// Add URL to audio file
+		audioPath = `/temp/audio/${audioPath}`;
 
 		console.log("Received response: ", props.response.response);
 
@@ -121,6 +138,7 @@ export function Avatar(props) {
 
 		for (let i = 0; i < lipsync.length; i++) {
 			let visemeId = lipsync[i].visemeId;
+			// lipsync[i].audioOffset is in milliseconds, so divide by 1000 to get seconds
 			let visemeOffsetTime = lipsync[i].audioOffset / 1000;
 			let nextVisemeOffsetTime = lipsync[i + 1] ? lipsync[i + 1].audioOffset / 1000 : 0;
 
@@ -141,6 +159,7 @@ export function Avatar(props) {
 					);
 				}
 
+				// Blink sometimes
 				if (Math.random() < 0.1) {
 					nodes.EyeLeft.morphTargetInfluences[nodes.EyeLeft.morphTargetDictionary["blink"]] = 1;
 					nodes.EyeRight.morphTargetInfluences[nodes.EyeRight.morphTargetDictionary["blink"]] = 1;
@@ -158,6 +177,7 @@ export function Avatar(props) {
 
 	const group = useRef();
 
+	// Load all custom animations
 	let animationFilesArray = Object.values(animationFiles);
 	let customAnimations = [];
 	for (let i = 0; i < animationFilesArray.length; i++) {
@@ -171,8 +191,8 @@ export function Avatar(props) {
 		nodes.Wolf3D_Head.morphTargetInfluences[nodes.Wolf3D_Head.morphTargetDictionary["viseme_I"]] = 1;
 		nodes.Wolf3D_Teeth.morphTargetInfluences[nodes.Wolf3D_Teeth.morphTargetDictionary["viseme_I"]] = 1;
 		if (playAudio) {
-			console.log("play",audio);
 			audio.play();
+			// Choose one of the animations in the array sittingTalkingAnimations randomly
 			setAnimation(sittingTalkingAnimations[Math.floor(Math.random() * sittingTalkingAnimations.length)]);
 		} else {
 			setAnimation("Sitting Idle");
@@ -195,7 +215,7 @@ export function Avatar(props) {
 			group.current.getObjectByName("Head").lookAt(state.camera.position);
 		}
 	});
-
+	
 	return (
 		<group {...props} dispose={null} ref={group}>
     <primitive object={nodes.Hips} />

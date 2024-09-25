@@ -21,7 +21,7 @@ const HomePage = () => {
           <h3>LIVE INTERVIEW</h3>
           <p>Utilize AI for live interview face-to-text conversion to enhance knowledge.</p>
 
-          <Link to='/advance'><button>Start Interview</button></Link>
+          <Link to='/Interview'><button>Start Interview</button></Link>
         </div>
       </section>
 
