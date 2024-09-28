@@ -28,7 +28,27 @@ class ChatbotService {
 	}
 
 	async sendMessage(message) {
-		this.socket.emit("message", { question: message });
+		const StartTime = localStorage.getItem('questionStartTime');
+		const interviewStartTime = localStorage.getItem('interviewStartTime');
+		const name = localStorage.getItem('name')
+		let duration=0;
+		let interviewDuration = 0;
+		if (StartTime) {
+			duration = (Date.now()-StartTime)/1000;
+			console.log('response duration:', duration);
+			localStorage.removeItem('questionStartTime');
+		}
+		if(interviewStartTime)
+		{
+			interviewDuration = (Date.now()-interviewStartTime)/1000;
+			console.log('response duration:', interviewDuration);
+		}
+		if(interviewDuration>1200 || duration>120)
+		{
+			message = "Please End the Interview";
+		}
+
+		this.socket.emit("message", { question: message,duration,interviewStartTime,name });
 
 		let response = await new Promise((resolve, reject) => {
 			this.socket.on("responseMessage", (response) => {

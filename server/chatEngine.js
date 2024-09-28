@@ -13,16 +13,23 @@ mongoose.connect("mongodb://localhost:27017/live-interview")
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.error("MongoDB connection error:", err));
 
-    const chatSchema = new mongoose.Schema({
-        name: { type: String, required: true },
-        user_msg: { type: String, required: true },
-        ai: { type: String, required: true },
-        score: { type: Number, required: true }, // new field for score
-        session: { type: String, required: true }, // new field for session type
-    });
-    
+const chatSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    user_msg: { type: String, required: true },
+    ai: { type: String, required: true },
+    score: { type: Number, required: true },
+    section: { type: String, required: true },
+    duration: { type: Number, required: true },
+});
+
 const Chat = mongoose.model("Chat", chatSchema);
-    
+
+const MAX_INTERVIEW_DURATION = 300; // Total interview time in seconds (e.g., 30 minutes)
+const STAGE_DURATION = 60; // Each stage duration in seconds (e.g., 5 minutes)
+const PASSING_SCORE_THRESHOLD = 5; // Minimum average score to pass each stage
+const NUMBER_OF_STAGES = Math.floor(MAX_INTERVIEW_DURATION / STAGE_DURATION);
+const QUESTIONS_PER_STAGE = 5;
+
 
 class Chatbot {
     constructor(public_path) {
@@ -70,23 +77,19 @@ class Chatbot {
 
         this.groqHistory = [];
         this.messages = [];
-        let ai_content=" ";
-        if(this.settings.resume==="skills")
-            {
-                ai_content=`You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to skills mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
-            }
-            else if(this.settings.resume==="project")
-            {
-                ai_content=`You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to projects mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
-            }
-            else if(this.settings.resume==="hr")
-            {
-                ai_content=`You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to personal details mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
-            }
-            else if(this.settings.resume === "all")
-            {
-                ai_content=`You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to skills mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
-            }
+        let ai_content = " ";
+        if (this.settings.resume === "skills") {
+            ai_content = `You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to skills mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
+        }
+        else if (this.settings.resume === "project") {
+            ai_content = `You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to projects mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
+        }
+        else if (this.settings.resume === "hr") {
+            ai_content = `You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to personal details mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
+        }
+        else if (this.settings.resume === "all") {
+            ai_content = `You are a manager conducting a technical round of a job interview. Follow these rules: 1) Never reveal that you are an AI. 2) Provide logical answers based only on the resume and identity information; do not invent fake details. 3) Respond in the language used by the interviewer. 4) Answer in a human-like manner, avoiding technical jargon. 5) Ensure your answers are consistent with previous responses without repeating yourself. 6) Do not repeat yourself.7)Never ask the Interviewee to ask you questions.8)Start with Questions based on the given resume.9)Dont explain the answers everytime and move onto next question.10)Make note of how the interviewee performs and rate him when he asks about his performance.11)Ask 2 follow on questions maximum then move to other quesions.12)Ask questions mainly related to skills mentioned by the interviewee in the resume. Identity: Your name is Master , and you are hiring officer for a ${this.settings.job_title} position at ${this.settings.company_name}. The interviewee name is ${this.settings.interviewer_name}. From now on, answer in English and never mention that you are an AI. Here is the resume text to help you answer the questions: ${resumeText}`
+        }
 
         this.messages.push({
             role: "system",
@@ -120,88 +123,133 @@ class Chatbot {
                     }
                     resolve(resume_text);
                     console.log("---------------------------------------------------------------------------------------")
-                    console.log("resume text",resume_text);
+                    console.log("resume text", resume_text);
                     console.log("---------------------------------------------------------------------------------------")
-                    console.log("resume-title",this.settings);
+                    console.log("resume-title", this.settings);
                 });
             });
         });
     }
 
-    async chat(userInput) {
+    
+
+    async chat(userInput, duration, interviewStartTime, name) {
         this.messages.push({
             role: "user",
             content: userInput,
-        });
-    
-        try {
-            const completion = await this.groq.chat.completions.create({
-                messages: [
-                    ...this.messages,
-                    {
-                        role: "system",
-                        content: `Please respond to the user's message in valid JSON format as shown below please all responce is json format and also {} inside broket key and value bellow format :
+        });        
+
+        const completion = await this.groq.chat.completions.create({
+            messages: [
+                ...this.messages,
+                {
+                    role: "system",
+                    content: `Must give the response is bellow Json format as shown below please all responce is json format and also {} inside broket key and value bellow format :
                         {
                             "aiResponse": "<your response>",
                             "score": <integer between 0 and 10>,
-                            "session": "<session type>"
+                            "section": "<section type>"
                         }.
-                        Ensure the JSON is valid and complete, without any additional text. Session types include 'skill', 'project', 'experience', 'company', or 'general'.`
-                    }
-                ],
-                model: "llama3-8b-8192",
-            });
-    
-            if (completion.choices && completion.choices[0] && completion.choices[0].message) {
-                const aiMessage = completion.choices[0].message.content.trim();
-    
-                // Check if the response starts with '{' and ends with '}'
-                if (aiMessage.startsWith('{') && aiMessage.endsWith('}')) {
-                    try {
-                        // Parse the JSON response from the AI
-                        const parsedResponse = JSON.parse(aiMessage);
-    
-                        const { aiResponse, score, session } = parsedResponse;
-    
-                        // Save the conversation to the database
-                        await Chat.create({
-                            name: "jeyachandran",
-                            user_msg: userInput,
-                            ai: aiResponse,
-                            score, // The score returned by the AI
-                            session, // The session type returned by the AI
-                        });
-    
-                        // Store the assistant's response for the conversation history
-                        this.messages.push({
-                            role: "assistant",
-                            content: aiResponse,
-                        });
-    
-                        await this.exportChat();
-    
-                        return aiResponse;
-                    } catch (jsonParseError) {
-                        console.log("JSON Parsing Error:", jsonParseError);
-                        throw new Error("Failed to parse AI response as JSON");
-                    }
-                } else {
-                    console.log("AI response is not valid JSON:", aiMessage);
-                    throw new Error("AI response is not valid JSON or is incomplete");
+                        Ensure the JSON is valid and complete, without any additional text. section types include 'skill', 'project', 'experience', 'company', or 'general'. `
                 }
+            ],
+            model: "llama3-8b-8192",
+        });
+
+        if (completion.choices && completion.choices[0] && completion.choices[0].message) {
+            const aiMessage = completion.choices[0].message.content.trim();
+
+            // Check if the response starts with '{' and ends with '}'
+            if (aiMessage.startsWith('{') && aiMessage.endsWith('}')) {
+                // Parse the JSON response from the AI
+                const parsedResponse = JSON.parse(aiMessage);
+
+                const { aiResponse, score, section } = parsedResponse;
+
+                // Save the conversation to the database
+                await Chat.create({
+                    name: name,
+                    user_msg: userInput,
+                    ai: aiResponse,
+                    score, // The score returned by the AI
+                    section, // The session type returned by the AI
+                    duration,
+                });
+
+                // Store the assistant's response for the conversation history
+                this.messages.push({
+                    role: "assistant",
+                    content: aiResponse,
+                });
+
+                await this.exportChat();
+
+                return aiResponse;
+
             } else {
-                console.log("Invalid completion format:", completion);
-                throw new Error("Invalid completion format");
+                console.log("AI response is not valid JSON:", aiMessage);
+                throw new Error("AI response is not valid JSON or is incomplete");
             }
-        } catch (error) {
-            console.log(error);
-            return {
-                error: error.message,
-            };
+        } else {
+            console.log("Invalid completion format:", completion);
+            throw new Error("Invalid completion format");
         }
+
+    }
+
+    async evaluateInterviewProgress(interviewDuration, name) {
+        let scoreAvg = 0;
+    
+        let elapsedTime = interviewDuration;
+        elapsedTime = Math.floor(elapsedTime / 1000);
+        
+        let completedStage;
+        let currentStage;
+        try {
+            const results = await Chat.find({ name: name });
+            const n = results.length;
+            console.log("number",n);
+    
+            if (n === 0) {
+                return { };
+            }
+    
+            let totalScore = 0;
+            let totalQuestions = 0; 
+    
+            for (let i = 0; i < n; i++) {
+                totalScore += results[i].score;
+                totalQuestions += 1;
+            }
+            scoreAvg = totalScore / n;
+    
+            completedStage = Math.floor(totalQuestions / QUESTIONS_PER_STAGE);
+            
+            currentStage = completedStage + 1; 
+            currentStage = Math.min(currentStage, NUMBER_OF_STAGES); 
+    
+        } catch (error) {
+            console.error("Error evaluating interview progress:", error);
+            return res.status(500).json({ error: "An error occurred while evaluating the interview progress." });
+        }
+    
+        let passed = scoreAvg >= PASSING_SCORE_THRESHOLD; 
+    
+        const interviewCompleted = (completedStage >= NUMBER_OF_STAGES);
+    
+        return {
+            currentStage,   
+            completedStage,          // The current stage the interviewee is in
+            status: passed ? "pass" : "fail", // Overall pass/fail status based on average score
+            interviewCompleted,       // Whether the interview has been fully completed
+        };
     }
     
+
     
+    
+    
+
 
     async exportChat() {
         console.log("Exporting chat...");
@@ -229,12 +277,13 @@ class Chatbot {
         return chat_path;
     }
 
+
     async textToSpeech(text) {
         let visemes = [];
 
         const fileName = `${Math.random().toString(36).substring(7)}.wav`;
         const audioFilePath = path.join(__dirname, '..', 'client/public/temp', 'audio', fileName);
-        console.log("path",audioFilePath);
+        console.log("path", audioFilePath);
 
         const audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFilePath);
 
@@ -255,6 +304,8 @@ class Chatbot {
                 }
             });
         });
+
+        //store start time in db
 
         synthesizer.close();
 

@@ -53,9 +53,19 @@ io.on("connection", (socket) => {
             if (!data || typeof data.question !== "string") {
                 throw new TypeError("The 'question' property must be a string.");
             }
-    
+            let response;
             console.log("Processing question:", data.question);
-            const response = await chatbot.chat(data.question);
+            let isAIReplaied = true;
+            while(isAIReplaied)
+            {
+              try{
+               response = await chatbot.chat(data.question,data.duration,data.interviewStartTime,data.name);
+               isAIReplaied = false;
+              }
+              catch{
+                console.log("Ai replaied error");
+              }
+            }
             const speechData = await chatbot.textToSpeech(response);
     
             console.log(`RESPONSE (${socket.id}): ${response}`);
@@ -75,6 +85,20 @@ io.on("connection", (socket) => {
         }
     });
     
+});
+
+
+
+app.get('/api/evaluateInterview', async (req, res) => {  
+  const { interviewDuration: interviewDuration, name } = req.query;  
+
+  if (!interviewDuration || !name) {  
+      return res.status(400).json({ error: "interviewStartTime and name are required" });  
+  }  
+
+  const interviewProgress = await chatbot.evaluateInterviewProgress(interviewDuration, name);  
+            
+  return res.json(interviewProgress);  
 });
 
 //SKILLS

@@ -97,7 +97,7 @@ export const Experience = ({ response }) => {
       <Desk position={state.deskPosition} scale={state.deskScale} />
       <Table position={state.tablePosition} scale={state.tableScale} />
       <Room position={state.roomPosition} scale={state.roomScale} />
-
+      
       <Environment preset="sunset" />
       <mesh>
         <planeGeometry args={[newWidth, newHeight]} />

@@ -4,10 +4,20 @@ const SettingsDisplay = ({ settings, setSettings, visible, setVisible }) => {
 	const formRef = useRef(null);
 	const [newSettings, setNewSettings] = useState(settings);
 
+	localStorage.setItem('name', newSettings.interviewer_name); 
+	console.log("name",newSettings.interviewer_name)
+
+
 	const updateSettings = (e) => {
 		e.preventDefault();
 		const formData = new FormData(formRef.current);
 		const newSettings = Object.fromEntries(formData.entries());
+
+		const currentTime = Date.now(); 
+		localStorage.removeItem('interviewStartTime');
+		localStorage.setItem('interviewStartTime', currentTime); 
+		localStorage.removeItem('questionStartTime');
+  		console.log("Interview Started");
 
 		if (validateUrl(e.target.link_to_resume.value)) {
 			setSettings(newSettings);
@@ -32,6 +42,8 @@ const SettingsDisplay = ({ settings, setSettings, visible, setVisible }) => {
 			return false;
 		}
 	}
+
+	
 
 	// Render the settings
 	return (
@@ -105,7 +117,7 @@ const SettingsDisplay = ({ settings, setSettings, visible, setVisible }) => {
 
 
 				<div className="setting__button">
-					<button className="btn_outline" type="submit">
+					<button className="btn_outline" type="submit" style={{width:"300px"}} >
 						Save 
 					</button>
 				</div>

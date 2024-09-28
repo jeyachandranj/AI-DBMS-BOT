@@ -188,12 +188,20 @@ export function Avatar(props) {
 	const { actions } = useAnimations([idleAnimation[0], ...customAnimations], group);
 
 	useEffect(() => {
+		const handleAudioEnd = () => {
+			const currentTime = Date.now(); 
+			localStorage.setItem('questionStartTime', currentTime); 
+			console.log('Audio finished at time:', currentTime);
+		};
+
 		nodes.Wolf3D_Head.morphTargetInfluences[nodes.Wolf3D_Head.morphTargetDictionary["viseme_I"]] = 1;
 		nodes.Wolf3D_Teeth.morphTargetInfluences[nodes.Wolf3D_Teeth.morphTargetDictionary["viseme_I"]] = 1;
 		if (playAudio) {
 			audio.play();
 			// Choose one of the animations in the array sittingTalkingAnimations randomly
 			setAnimation(sittingTalkingAnimations[Math.floor(Math.random() * sittingTalkingAnimations.length)]);
+			audio.addEventListener('ended', handleAudioEnd); // Add event listener when audio finishes
+
 		} else {
 			setAnimation("Sitting Idle");
 			audio.pause();
