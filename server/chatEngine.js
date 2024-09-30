@@ -26,7 +26,7 @@ const Chat = mongoose.model("Chat", chatSchema);
 
 const MAX_INTERVIEW_DURATION = 300; // Total interview time in seconds (e.g., 30 minutes)
 const STAGE_DURATION = 60; // Each stage duration in seconds (e.g., 5 minutes)
-const PASSING_SCORE_THRESHOLD = 5; // Minimum average score to pass each stage
+const PASSING_SCORE_THRESHOLD = 9; // Minimum average score to pass each stage
 const NUMBER_OF_STAGES = Math.floor(MAX_INTERVIEW_DURATION / STAGE_DURATION);
 const QUESTIONS_PER_STAGE = 5;
 
